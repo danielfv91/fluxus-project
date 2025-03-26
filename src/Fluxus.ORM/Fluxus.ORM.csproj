@@ -24,9 +24,7 @@
 		<ProjectReference Include="..\Fluxus.Application\Fluxus.Application.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Folder Include="Mapping\" />
 	  <Folder Include="Migrations\" />
 	  <Folder Include="Publishers\" />
-	  <Folder Include="Repositories\" />
 	</ItemGroup>
 </Project>
