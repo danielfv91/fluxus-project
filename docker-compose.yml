@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  fluxus.webapi:
+    container_name: fluxus_webapi
+    image: ${DOCKER_REGISTRY-}fluxuswebapi
+    build:
+      context: .
+      dockerfile: src/Fluxus.WebApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+    ports:
+      - "8080"
+      - "8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+
+  fluxus.database:
+    container_name: fluxus_database
+    image: postgres:13
+    environment:
+      POSTGRES_DB: fluxus_database
+      POSTGRES_USER: developer
+      POSTGRES_PASSWORD: fluxus123*
+    ports:
+      - "5432"
+    restart: unless-stopped
+
+  fluxus.nosql:
+    container_name: fluxus_nosql 
+    image: mongo:8.0    
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: developer
+        MONGO_INITDB_ROOT_PASSWORD: fluxus123*
+    ports:
+      - "27017"
+
+  fluxus.cache:
+    container_name: fluxus_cache 
+    image: redis:7.4.1-alpine     
+    command: redis-server --requirepass fluxus123*
+    environment:
+       MONGO_INITDB_ROOT_USERNAME: developer
+       MONGO_INITDB_ROOT_PASSWORD: fluxus123*
+    ports:
+       - "6379"
