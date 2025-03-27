@@ -29,6 +29,11 @@ namespace Fluxus.WebApi.Middleware
             {
                 await HandleBusinessExceptionAsync(context, ex);
             }
+            catch (UnauthorizedAccessException ex)
+            {
+                await HandleUnauthorizedAccessExceptionAsync(context, ex);
+            }
+
         }
 
         private static Task HandleValidationExceptionAsync(HttpContext context, ValidationException exception)
@@ -77,6 +82,26 @@ namespace Fluxus.WebApi.Middleware
 
             return context.Response.WriteAsync(JsonSerializer.Serialize(response, jsonOptions));
         }
+
+        private static Task HandleUnauthorizedAccessExceptionAsync(HttpContext context, UnauthorizedAccessException exception)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+
+            var response = new ApiResponse
+            {
+                Success = false,
+                Message = exception.Message
+            };
+
+            var jsonOptions = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            return context.Response.WriteAsync(JsonSerializer.Serialize(response, jsonOptions));
+        }
+
 
     }
 }

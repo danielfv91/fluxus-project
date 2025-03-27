@@ -1,37 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
+﻿using Fluxus.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
-namespace Fluxus.ORM;
-
-public class DefaultContext : DbContext
+namespace Fluxus.ORM
 {
-    public DefaultContext(DbContextOptions<DefaultContext> options) : base(options) { }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    public class DefaultContext : DbContext
     {
-        base.OnModelCreating(modelBuilder);
-    }
-}
+        public DefaultContext(DbContextOptions<DefaultContext> options) : base(options)
+        {
+        }
 
-public class FluxusContextFactory : IDesignTimeDbContextFactory<DefaultContext>
-{
-    public DefaultContext CreateDbContext(string[] args)
-    {
-        IConfigurationRoot configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .Build();
+        public DbSet<User> Users => Set<User>();
 
-        var builder = new DbContextOptionsBuilder<DefaultContext>();
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
-
-        builder.UseNpgsql(
-            connectionString,
-            b => b.MigrationsAssembly(typeof(DefaultContext).Assembly.FullName)
-        );
-
-        return new DefaultContext(builder.Options);
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

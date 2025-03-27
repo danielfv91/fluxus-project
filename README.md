@@ -9,7 +9,9 @@ src/
 ├── Fluxus.WebApi/         # API principal
 ├── Fluxus.Application/    # Casos de uso e serviços de aplicação
 ├── Fluxus.Domain/         # Entidades e interfaces de domínio
-├── Fluxus.Infrastructure/ # Acesso a dados, EF Core, repositórios
+├── Fluxus.ORM/            # Acesso a dados, EF Core, mapeamentos e seed
+├── Fluxus.Common/         # Logging, validações, segurança, middlewares
+├── Fluxus.IoC/            # Registro modular de dependências
 tests/
 └── Fluxus.Tests/          # Testes de unidade e integração
 ```
@@ -18,40 +20,37 @@ tests/
 
 - .NET 8
 - ASP.NET Core Web API
+- MediatR
+- AutoMapper
 - Entity Framework Core
 - FluentValidation
-- Serilog (logging)
-- Swagger (documentação de API)
-- xUnit (testes)
-- Docker
+- Serilog
+- JWT (autenticação)
+- PostgreSQL
 
-## Como executar o projeto localmente
+## Como executar o projeto
 
-### Pré-requisitos
+Para um guia completo de configuração e execução local, acesse:
 
-- [.NET 8 SDK](https://dotnet.microsoft.com/download)
-- [Docker](https://www.docker.com/) (opcional)
-- [Visual Studio 2022](https://visualstudio.microsoft.com/) ou VS Code
+[`docs/setup.md`](docs/setup.md)
 
-### Passos
+## Autenticação
 
-1. Clone o repositório:
-```bash
-git clone https://github.com/danielfv91/fluxus.git
-cd fluxus
-```
+- Autenticação via JWT
+- Seed de usuário admin controlado por configuração
+- Passwords com BCrypt
+- Proteção de endpoints com `[Authorize]`
 
-2. Restaure os pacotes:
-```bash
-dotnet restore
-```
+Para mais informações sobre o fluxo de autenticação, veja:
 
-3. Execute o projeto:
-```bash
-dotnet run --project src/Fluxus.WebApi
-```
+[`docs/auth.md`](docs/auth.md)
 
-4. Acesse o Swagger:
-```
-http://localhost:5119/swagger
-```
+## Arquitetura
+
+Clean Architecture com separação clara de camadas e responsabilidades.
+
+[`docs/architecture.md`](docs/architecture.md)
+
+## Licença
+
+Este projeto está sob a licença MIT.
