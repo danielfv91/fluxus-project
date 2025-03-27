@@ -14,6 +14,7 @@ namespace Fluxus.IoC.ModuleInitializers
             builder.Services.AddScoped<DbContext>(provider => provider.GetRequiredService<DefaultContext>());
 
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
         }
     }
 }
