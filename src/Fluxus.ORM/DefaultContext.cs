@@ -1,4 +1,5 @@
 ﻿using Fluxus.Domain.Entities;
+using Fluxus.ORM.Mappings;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
