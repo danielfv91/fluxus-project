@@ -10,6 +10,8 @@ namespace Fluxus.IoC.ModuleInitializers
         public void Initialize(WebApplicationBuilder builder)
         {
             builder.Services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<IAuthenticatedUser, AuthenticatedUser>();
         }
     }
 }
