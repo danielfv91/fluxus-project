@@ -6,9 +6,9 @@ namespace Fluxus.ORM.Repositories
 {
     public class TransactionRepository : ITransactionRepository
     {
-        private readonly DbContext _context;
+        private readonly DefaultContext _context;
 
-        public TransactionRepository(DbContext context)
+        public TransactionRepository(DefaultContext context)
         {
             _context = context;
         }
@@ -17,6 +17,27 @@ namespace Fluxus.ORM.Repositories
         {
             await _context.Set<Transaction>().AddAsync(transaction, cancellationToken);
             await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<List<Transaction>> GetByPeriodAsync(
+            Guid userId,
+            DateTime? dateFrom,
+            DateTime? dateTo,
+            CancellationToken cancellationToken)
+        {
+            var query = _context.Transactions
+                .AsNoTracking()
+                .Where(t => t.UserId == userId);
+
+            if (dateFrom.HasValue)
+                query = query.Where(t => t.Date >= dateFrom.Value);
+
+            if (dateTo.HasValue)
+                query = query.Where(t => t.Date <= dateTo.Value);
+
+            return await query
+                .OrderByDescending(t => t.Date)
+                .ToListAsync(cancellationToken);
         }
     }
 }

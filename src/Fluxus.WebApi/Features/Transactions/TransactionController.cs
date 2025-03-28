@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using Fluxus.Application.Features.Transactions.CreateTransaction;
+using Fluxus.Application.Features.Transactions.ListTransactions;
+using Fluxus.WebApi.Common;
+using Fluxus.WebApi.Features.Transactions.CreateTransactionFeature;
+using Fluxus.WebApi.Features.Transactions.ListTransactionsFeature;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Fluxus.WebApi.Common;
 
-namespace Fluxus.WebApi.Features.Transactions.CreateTransactionFeature
+namespace Fluxus.WebApi.Features.Transactions
 {
     [Authorize]
     [ApiController]
@@ -22,13 +25,35 @@ namespace Fluxus.WebApi.Features.Transactions.CreateTransactionFeature
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateTransactionRequest request)
+        public async Task<IActionResult> Create([FromBody] CreateTransactionRequest request)
         {
             var command = _mapper.Map<CreateTransactionCommand>(request);
             command.UserId = HttpContext.GetUserId();
 
             var result = await _mediator.Send(command);
-            return Ok(_mapper.Map<CreateTransactionResponse>(result));
+            var response = _mapper.Map<CreateTransactionResponse>(result);
+
+            return Ok(new ApiResponseWithData<CreateTransactionResponse>
+            {
+                Success = true,
+                Message = "Transação criada com sucesso.",
+                Data = response
+            });
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(ApiResponseWithData<List<ListTransactionsResult>>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAll([FromQuery] ListTransactionsRequest request, CancellationToken cancellationToken)
+        {
+            var query = _mapper.Map<ListTransactionsQuery>(request);
+            var result = await _mediator.Send(query, cancellationToken);
+
+            return Ok(new ApiResponseWithData<List<ListTransactionsResult>>
+            {
+                Success = true,
+                Message = "Transações listadas com sucesso.",
+                Data = result
+            });
         }
     }
 }
