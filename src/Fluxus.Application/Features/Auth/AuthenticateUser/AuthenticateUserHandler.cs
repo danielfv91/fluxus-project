@@ -34,7 +34,6 @@ public class AuthenticateUserHandler : IRequestHandler<AuthenticateUserCommand, 
             Id = user.Id,
             Name = user.Name,
             Email = user.Email,
-            Role = user.Role,
             Token = token
         };
     }

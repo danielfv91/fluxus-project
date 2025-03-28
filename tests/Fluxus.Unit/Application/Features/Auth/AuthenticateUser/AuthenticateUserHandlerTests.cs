@@ -55,7 +55,6 @@ namespace Fluxus.UnitTests.Application.Features.Auth.AuthenticateUser
             result.Token.Should().Be("fake-token");
             result.Email.Should().Be(user.Email);
             result.Name.Should().Be(user.Name);
-            result.Role.Should().Be(user.Role);
             result.Id.Should().Be(user.Id);
         }
 
