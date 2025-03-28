@@ -14,12 +14,10 @@ namespace Fluxus.ORM.Seed
                 var email = configuration["Seed:AdminEmail"];
                 var password = configuration["Seed:AdminPassword"];
                 var name = configuration["Seed:AdminName"];
-                var role = configuration["Seed:AdminRole"];
 
                 if (string.IsNullOrWhiteSpace(email) ||
                     string.IsNullOrWhiteSpace(password) ||
-                    string.IsNullOrWhiteSpace(name) ||
-                    string.IsNullOrWhiteSpace(role))
+                    string.IsNullOrWhiteSpace(name))
                 {
                     throw new InvalidOperationException("Admin seed values must be provided via configuration.");
                 }
@@ -28,8 +26,7 @@ namespace Fluxus.ORM.Seed
                 {
                     Name = name,
                     Email = email,
-                    PasswordHash = passwordHasher.HashPassword(password),
-                    Role = role
+                    PasswordHash = passwordHasher.HashPassword(password)
                 };
 
                 context.Users.Add(admin);

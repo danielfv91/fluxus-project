@@ -24,8 +24,7 @@ namespace Fluxus.UnitTests.Application.TestData
                 Id = Guid.NewGuid(),
                 Name = Faker.Name.FullName(),
                 Email = email,
-                PasswordHash = passwordHash,
-                Role = "User"
+                PasswordHash = passwordHash
             };
         }
     }
