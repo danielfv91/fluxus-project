@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using Fluxus.Application.Features.Consolidations.ListDailyConsolidation;
 using Fluxus.Application.Features.Transactions.CreateTransaction;
 using Fluxus.Application.Features.Transactions.ListTransactions;
 using Fluxus.WebApi.Common;
+using Fluxus.WebApi.Features.Consolidations.ListDailyConsolidation;
 using Fluxus.WebApi.Features.Transactions.CreateTransactionFeature;
 using Fluxus.WebApi.Features.Transactions.ListTransactionsFeature;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using OneOf.Types;
 
 namespace Fluxus.WebApi.Features.Transactions
 {
@@ -55,5 +58,25 @@ namespace Fluxus.WebApi.Features.Transactions
                 Data = result
             });
         }
+
+        [HttpGet("consolidation")]
+        [ProducesResponseType(typeof(ApiResponseWithData<IEnumerable<ListDailyConsolidationResponse>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetConsolidation([FromQuery] ListDailyConsolidationRequest request, CancellationToken cancellationToken)
+        {
+            var query = _mapper.Map<ListDailyConsolidationQuery>(request);
+            query.UserId = HttpContext.GetUserId();
+
+            var result = await _mediator.Send(query, cancellationToken);
+            var response = _mapper.Map<IEnumerable<ListDailyConsolidationResponse>>(result);
+
+            return Ok(new ApiResponseWithData<IEnumerable<ListDailyConsolidationResponse>>
+            {
+                Success = true,
+                Message = "Consolidação listada com sucesso.",
+                Data = response
+            });
+        }
+
     }
 }
