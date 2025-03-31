@@ -7,7 +7,7 @@ namespace Fluxus.Application.Features.Consolidations.ListDailyConsolidation
     {
         public ListDailyConsolidationProfile()
         {
-            CreateMap<DailyConsolidation, DailyConsolidationResult>();
+            CreateMap<DailyConsolidation, ListDailyConsolidationResult>();
         }
     }
 }

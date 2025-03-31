@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Fluxus.Application.Features.Consolidations.ListDailyConsolidation
 {
-    public class ListDailyConsolidationHandler : IRequestHandler<ListDailyConsolidationQuery, IEnumerable<DailyConsolidationResult>>
+    public class ListDailyConsolidationHandler : IRequestHandler<ListDailyConsolidationQuery, List<ListDailyConsolidationResult>>
     {
         private readonly IDailyConsolidationRepository _repository;
         private readonly IMapper _mapper;
@@ -15,18 +15,21 @@ namespace Fluxus.Application.Features.Consolidations.ListDailyConsolidation
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<DailyConsolidationResult>> Handle(ListDailyConsolidationQuery request, CancellationToken cancellationToken)
+        public async Task<List<ListDailyConsolidationResult>> Handle(ListDailyConsolidationQuery request, CancellationToken cancellationToken)
         {
-            var all = await _repository.GetAllByUserAsync(request.UserId, cancellationToken);
+            var consolidations = await _repository.GetAllByUserAsync(request.UserId, cancellationToken);
 
-            var filtered = all
-                .Where(d =>
-                    (!request.DateFrom.HasValue || d.Date >= request.DateFrom.Value) &&
-                    (!request.DateTo.HasValue || d.Date <= request.DateTo.Value))
-                .OrderByDescending(d => d.Date);
+            if (request.DateFrom.HasValue)
+                consolidations = consolidations
+                    .Where(c => c.Date >= request.DateFrom.Value)
+                    .ToList();
 
-            return _mapper.Map<IEnumerable<DailyConsolidationResult>>(filtered);
+            if (request.DateTo.HasValue)
+                consolidations = consolidations
+                    .Where(c => c.Date <= request.DateTo.Value)
+                    .ToList();
+
+            return _mapper.Map<List<ListDailyConsolidationResult>>(consolidations);
         }
-
     }
 }

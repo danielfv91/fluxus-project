@@ -8,7 +8,7 @@ namespace Fluxus.WebApi.Features.Consolidations.ListDailyConsolidation
         public ListDailyConsolidationProfile()
         {
             CreateMap<ListDailyConsolidationRequest, ListDailyConsolidationQuery>();
-            CreateMap<DailyConsolidationResult, ListDailyConsolidationResponse>();
+            CreateMap<ListDailyConsolidationResult, ListDailyConsolidationResponse>();
         }
     }
 }

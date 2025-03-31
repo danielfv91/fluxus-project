@@ -2,7 +2,7 @@
 
 namespace Fluxus.Application.Features.Consolidations.ListDailyConsolidation
 {
-    public class DailyConsolidationResult
+    public class ListDailyConsolidationResult
     {
         public DateOnly Date { get; set; }
 
