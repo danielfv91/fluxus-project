@@ -20,6 +20,9 @@ public class Program
 {
     public static async Task Main(string[] args)
     {
+
+        QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+
         try
         {
             Log.Information("Starting web application");
