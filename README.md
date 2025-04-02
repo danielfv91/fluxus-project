@@ -159,6 +159,7 @@ Fluxus
 │   └── Fluxus.Common            # PDF, segurança e utilitários comuns
 ├── tests
 │   └── Fluxus.Unit              # Testes unitários
+├── docs                         # Documentos do projeto Fluxus
 ```
 
 ---
@@ -188,6 +189,7 @@ Veja a pasta `docs/` para:
 -(`padroes-e-praticas.md`): padrões aplicados (MediatR, AutoMapper, FluentValidation, etc.)
 -(`requisitos-atendidos.md`): como cada requisito do desafio foi contemplado
 -(`tech-stack.md`): tecnologias utilizadas e justificativas
+-(`servicos.md`): casos de uso dos serviços disponíveis no projeto Fluxus
 
 ---
 
