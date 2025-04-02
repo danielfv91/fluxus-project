@@ -84,7 +84,3 @@ Bearer <seu-token-aqui>
 ```csharp
 builder.Services.AddJwtAuthentication(builder.Configuration);
 ```
-
----
-
-Mais detalhes sobre arquitetura geral do projeto: `docs/architecture.md`
