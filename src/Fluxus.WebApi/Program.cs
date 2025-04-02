@@ -93,6 +93,8 @@ public class Program
 
             var app = builder.Build();
 
+            app.UseRequestTimeout(TimeSpan.FromSeconds(3));
+
             app.UseMiddleware<ValidationExceptionMiddleware>();
 
             if (app.Environment.IsDevelopment())

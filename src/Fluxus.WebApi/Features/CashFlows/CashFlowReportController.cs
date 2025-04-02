@@ -22,22 +22,45 @@ namespace Fluxus.WebApi.Features.CashFlows.Reports
             _authenticatedUser = authenticatedUser;
         }
 
-        [HttpGet("export")]
-        public async Task<IActionResult> Export([FromQuery] ExportDailyCashFlowReportRequest request, CancellationToken cancellationToken)
+        [HttpPost("daily/report")]
+        public async Task<IActionResult> Export([FromBody] ExportDailyCashFlowReportRequest request, CancellationToken cancellationToken)
         {
-            var query = new GenerateDailyCashFlowReportQuery
+            try
             {
-                UserId = _authenticatedUser.Id,
-                DateFrom = request.DateFrom,
-                DateTo = request.DateTo
-            };
+                var userId = _authenticatedUser.Id;
+                var query = new GenerateDailyCashFlowReportQuery
+                {
+                    UserId = userId,
+                    DateFrom = request.DateFrom,
+                    DateTo = request.DateTo
+                };
 
-            var result = await _mediator.Send(query, cancellationToken);
+                var result = await _mediator.Send(query, cancellationToken);
 
-            return new FileContentResult(result.FileContent, result.ContentType)
+                return new FileContentResult(result.FileContent, result.ContentType)
+                {
+                    FileDownloadName = result.FileName
+                };
+            }
+            catch (TaskCanceledException)
             {
-                FileDownloadName = result.FileName
-            };
+                return StatusCode(StatusCodes.Status504GatewayTimeout, new
+                {
+                    success = false,
+                    message = ReportMessages.TimeoutError
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    success = false,
+                    message = ReportMessages.UnexpectedError,
+                    detail = ex.Message
+                });
+            }
+
         }
+
     }
 }
