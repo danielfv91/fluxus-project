@@ -197,6 +197,7 @@ Veja a pasta `docs/` para:
 -(`requisitos-atendidos.md`): como cada requisito do desafio foi contemplado
 
 -(`tech-stack.md`): tecnologias utilizadas e justificativas
+
 -(`servicos.md`): casos de uso dos serviços disponíveis no projeto Fluxus
 
 ---
