@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace Fluxus.WebApi;
 
@@ -89,7 +90,20 @@ public class Program
                 );
             });
 
+            builder.Services.AddRateLimiter(options =>
+            {
+                options.AddFixedWindowLimiter("Relatorio", config =>
+                {
+                    config.PermitLimit = 50;
+                    config.Window = TimeSpan.FromSeconds(1);
+                    config.QueueProcessingOrder = System.Threading.RateLimiting.QueueProcessingOrder.OldestFirst;
+                    config.QueueLimit = 5;
+                });
+            });
+
             builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+            builder.Services.AddMemoryCache();
 
             var app = builder.Build();
 
@@ -102,6 +116,8 @@ public class Program
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseRateLimiter();
 
             app.UseHttpsRedirection();
 
