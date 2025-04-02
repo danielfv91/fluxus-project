@@ -181,13 +181,21 @@ Fluxus
 Veja a pasta `docs/` para:
 
 -(`arquitetura.md`): detalhamento das camadas, aplicação de DDD e CQRS
+
 -(`auth.md`): explicação do fluxo de autenticação com JWT
+
 -(`diagrama-da-solucao.md`): diagrama textual representando a arquitetura
+
 -(`escalabilidade-e-resiliencia.md`): mecanismos de tolerância a falhas, cache e rate limiting
+
 -(`estrategia-de-testes.md`): organização, ferramentas e cobertura dos testes automatizados
+
 -(`melhorias-futuras.md`): sugestões realistas de evolução do sistema
+
 -(`padroes-e-praticas.md`): padrões aplicados (MediatR, AutoMapper, FluentValidation, etc.)
+
 -(`requisitos-atendidos.md`): como cada requisito do desafio foi contemplado
+
 -(`tech-stack.md`): tecnologias utilizadas e justificativas
 -(`servicos.md`): casos de uso dos serviços disponíveis no projeto Fluxus
 
